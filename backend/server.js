@@ -14,6 +14,9 @@ app.use(express.json())
 const authRoutes = require('./routes/auth')
 app.use('/api/auth', authRoutes)
 
+const tripRoutes = require('./routes/trips')
+app.use('/api/trips', tripRoutes)
+
 // Test route
 app.get('/', (req, res) => {
     res.json({ message: 'Disembark server is running' })
