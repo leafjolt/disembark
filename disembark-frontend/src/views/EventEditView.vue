@@ -195,4 +195,149 @@ const handleSubmit = async () => {
   </div>
 </template>
 
+<style scoped>
+.event-edit-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  min-height: 100vh;
+}
 
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
+  gap: 16px;
+}
+
+.back-btn {
+  padding: 8px 12px;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  min-width: 44px;
+}
+
+.back-btn:hover {
+  background-color: #f0f0f0;
+  border-color: #d5d5d7;
+}
+
+.header h1 {
+  margin: 0;
+  flex: 1;
+}
+
+.event-form {
+  background-color: var(--bg);
+  padding: 32px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 15px;
+  color: var(--text-primary);
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.section {
+  background-color: var(--bg-secondary);
+  padding: 20px;
+  border-radius: 10px;
+  margin: 24px 0;
+  border-left: 4px solid var(--primary);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--primary);
+}
+
+.section h3 {
+  margin-top: 0;
+  color: var(--primary);
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.submit-btn, .cancel-btn {
+  flex: 1;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.submit-btn {
+  background-color: var(--secondary);
+  color: white;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background-color: #31a14a;
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cancel-btn {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.cancel-btn:hover {
+  background-color: #f0f0f0;
+  border-color: #d5d5d7;
+}
+</style>
