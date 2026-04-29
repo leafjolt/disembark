@@ -1,6 +1,6 @@
 # STEP-BY-STEP GUIDE
 
-This document is a living setup guide for the Disembark project. It is written during Weeks 13–15 and reflects the actual backend setup that has been completed so far. Frontend and deployment will be added in the future.
+This document is a living setup guide for the Disembark project. It is written during Weeks 13–15 and reflects the actual backend, frontend, and deployment setup for this repository.
 
 ---
 
@@ -167,3 +167,50 @@ Use the following endpoints with JSON bodies.
 #### Verify trips retrieval
 - URL: `GET http://localhost:3000/api/trips`
 - Header: `Authorization: Bearer <jwt>`
+
+---
+
+## Week 14: Front-end Setup
+
+### Clone or open the frontend project
+1. From the repo root, change into the frontend folder:
+   ```bash
+   cd disembark-frontend
+   ```
+2. Install frontend dependencies:
+   ```bash
+   npm install
+   ```
+3. Confirm the frontend environment file exists at `disembark-frontend/.env`.
+
+### Configure `VITE_API_URL`
+1. Open `disembark-frontend/.env`.
+2. Set the API URL used by the frontend stores:
+   ```env
+   VITE_API_URL=http://localhost:3000/api
+   ```
+3. This value is read by `disembark-frontend/src/stores/auth.js` and `disembark-frontend/src/stores/trips.js`.
+
+### Run the frontend dev server
+1. Start the backend first in a separate terminal:
+   ```bash
+   cd backend
+   npm run dev
+   ```
+2. In another terminal, start the frontend:
+   ```bash
+   cd disembark-frontend
+   npm run dev
+   ```
+3. Open the local URL printed by Vite, usually:
+   ```
+   http://localhost:5173
+   ```
+
+### Verify the frontend connects to the backend
+1. Register a new user in the frontend app.
+2. Log in and create a trip.
+3. If you can successfully load trips and add events, the frontend is connecting to the backend.
+4. You can also open browser developer tools and confirm network requests are sent to:
+   - `http://localhost:3000/api/auth/login`
+   - `http://localhost:3000/api/trips`
