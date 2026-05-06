@@ -7,12 +7,20 @@
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:backend": "cd backend && npm run dev",
     "dev:frontend": "cd disembark-frontend && npm run dev",
+    "build:frontend": "cd disembark-frontend && npm run build",
+    "deploy": "gh-pages -d disembark-frontend/dist",
     "install:all": "npm install && cd backend && npm install && cd ../disembark-frontend && npm install"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "gh-pages": "^6.3.0"
   },
-  "keywords": ["vue", "node", "travel", "itinerary"],
+  "keywords": [
+    "vue",
+    "node",
+    "travel",
+    "itinerary"
+  ],
   "author": "",
   "license": "ISC"
 }

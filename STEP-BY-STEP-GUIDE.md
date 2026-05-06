@@ -249,15 +249,62 @@ npm install
 
 ### Deploy the backend to Railway
 1. Create a new Railway project and connect it to this repository, or deploy from the `backend/` folder.
-2. In Railway, set environment variables:
+2. Because this repo contains both frontend and backend, make sure Railway is configured to use the backend root directory.
+   - In the Railway dashboard, set the project root / working directory to `backend/`.
+   - If using GitHub deploy, select the repo and then choose `backend/` as the root directory.
+3. In Railway, set environment variables:
    - `MONGODB_URI` — your MongoDB Atlas connection string.
    - `JWT_SECRET` — secret used to sign JWT tokens.
+   - `NODE_ENV` — set to `production`.
    - `PORT` — optional. Railway usually provides a port automatically.
-3. Set the start command to:
+4. Set the start command to:
    ```bash
    npm start
    ```
-4. Deploy and verify the backend URL returns the health endpoint successfully.
+5. Deploy and verify the backend URL returns the health endpoint successfully.
+
+### Deploy the frontend to GitHub Pages
+1. Build the frontend static site from `disembark-frontend/`:
+   ```bash
+   cd disembark-frontend
+   npm install
+   npm run build
+   ```
+2. If you are using GitHub Pages, deploy the contents of `disembark-frontend/dist/`.
+3. Configure GitHub Pages to serve from the deployed `gh-pages` branch or from the repository's Pages settings.
+4. Alternatively, use a GitHub Actions workflow to automatically build and publish `disembark-frontend/dist/` on push.
+
+### Set environment variables in the Railway dashboard
+1. Open your Railway project and go to **Settings** or **Variables**.
+2. Add these variables for the backend service:
+   - `MONGODB_URI` — your MongoDB Atlas connection string.
+   - `JWT_SECRET` — a random secret string for JWT signing.
+   - `NODE_ENV` — `production`.
+3. Leave Railway's assigned `PORT` unchanged.
+4. If your backend needs any additional environment-specific config, add it here.
+
+### Link the deployed front-end to the deployed back-end
+1. Get the Railway backend base URL, for example:
+   ```
+   https://your-app-railway.up.railway.app
+   ```
+2. In `disembark-frontend/.env.production`, set:
+   ```env
+   VITE_API_URL=https://your-app-railway.up.railway.app/api
+   ```
+3. Rebuild the frontend after updating the production environment:
+   ```bash
+   cd disembark-frontend
+   npm run build
+   ```
+4. Deploy the rebuilt `dist/` folder to GitHub Pages.
+5. The frontend will then send API requests to your Railway backend URL.
+
+### CORS configuration
+- The backend currently enables CORS for all origins using `cors()` in `backend/server.js`.
+- This means your deployed frontend on GitHub Pages can call the Railway backend without extra CORS setup.
+- If you later restrict CORS, add your GitHub Pages domain to the allowed origins.
+
 
 ### Deploy the frontend to GitHub Pages
 1. Build the frontend static site from `disembark-frontend/`:
