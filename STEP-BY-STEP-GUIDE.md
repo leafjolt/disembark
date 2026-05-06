@@ -184,12 +184,19 @@ Use the following endpoints with JSON bodies.
 3. Confirm the frontend environment file exists at `disembark-frontend/.env`.
 
 ### Configure `VITE_API_URL`
-1. Open `disembark-frontend/.env`.
+1. Open `disembark-frontend/.env.development` (for local development).
 2. Set the API URL used by the frontend stores:
    ```env
    VITE_API_URL=http://localhost:3000/api
    ```
-3. This value is read by `disembark-frontend/src/stores/auth.js` and `disembark-frontend/src/stores/trips.js`.
+3. For production, update `disembark-frontend/.env.production`:
+   ```env
+   VITE_API_URL=https://your-deployed-backend-url.com/api
+   ```
+4. Vite automatically loads the appropriate `.env` file based on the build command:
+   - `npm run dev` loads `.env.development`
+   - `npm run build` loads `.env.production`
+5. The stores in `disembark-frontend/src/stores/auth.js` and `disembark-frontend/src/stores/trips.js` will automatically use the correct API URL.
 
 ### Run the frontend dev server
 1. Start the backend first in a separate terminal:
@@ -207,6 +214,16 @@ Use the following endpoints with JSON bodies.
    http://localhost:5173
    ```
 
+**Alternative: Run both servers with one command**
+From the repository root, you can run both frontend and backend simultaneously:
+```bash
+npm run dev
+```
+This requires installing dependencies in the root first:
+```bash
+npm install
+```
+
 ### Verify the frontend connects to the backend
 1. Register a new user in the frontend app.
 2. Log in and create a trip.
@@ -214,3 +231,58 @@ Use the following endpoints with JSON bodies.
 4. You can also open browser developer tools and confirm network requests are sent to:
    - `http://localhost:3000/api/auth/login`
    - `http://localhost:3000/api/trips`
+
+### Frontend project structure
+- `disembark-frontend/src/main.js` — Vue app entrypoint
+- `disembark-frontend/src/router/index.js` — Vue Router routes and guards
+- `disembark-frontend/src/stores/auth.js` — authentication state and API calls
+- `disembark-frontend/src/stores/trips.js` — trips and event state management
+- `disembark-frontend/src/views/` — app pages for signup, login, trips, itinerary, and event editing
+
+### AI tooling / Claude Code
+- This repository does not include a `CLAUDE.md` configuration file.
+- If you use Claude Code or similar AI tooling, add any project-specific instructions in a root config file so your AI assistant knows the repo structure.
+
+---
+
+## Week 15: Deployment
+
+### Deploy the backend to Railway
+1. Create a new Railway project and connect it to this repository, or deploy from the `backend/` folder.
+2. In Railway, set environment variables:
+   - `MONGODB_URI` — your MongoDB Atlas connection string.
+   - `JWT_SECRET` — secret used to sign JWT tokens.
+   - `PORT` — optional. Railway usually provides a port automatically.
+3. Set the start command to:
+   ```bash
+   npm start
+   ```
+4. Deploy and verify the backend URL returns the health endpoint successfully.
+
+### Deploy the frontend to GitHub Pages
+1. Build the frontend static site from `disembark-frontend/`:
+   ```bash
+   npm run build
+   ```
+2. Deploy the generated `dist/` folder to GitHub Pages, Netlify, or another static host.
+3. In GitHub Pages or your chosen host, point the site to the `dist/` output.
+
+### Link frontend to backend in production
+1. Update the frontend environment for production to use the deployed backend URL.
+2. Edit `disembark-frontend/.env.production` and replace the placeholder:
+   ```env
+   VITE_API_URL=https://your-deployed-backend-url.com/api
+   ```
+3. Build the frontend with the production environment:
+   ```bash
+   cd disembark-frontend
+   npm run build
+   ```
+4. Deploy the generated `dist/` folder to GitHub Pages, Netlify, or another static host.
+
+### CORS configuration
+- The backend already enables CORS for all origins using `cors()` in `backend/server.js`.
+- This means the deployed frontend should be allowed to call the deployed backend without additional CORS changes.
+- If you lock CORS to specific origins later, add the frontend deployment origin to the allowed list.
+
+---

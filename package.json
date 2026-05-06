@@ -1,0 +1,17 @@
+{
+  "name": "disembark",
+  "version": "1.0.0",
+  "description": "Travel itinerary app with Vue frontend and Node backend",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd disembark-frontend && npm run dev",
+    "install:all": "npm install && cd backend && npm install && cd ../disembark-frontend && npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": ["vue", "node", "travel", "itinerary"],
+  "author": "",
+  "license": "ISC"
+}

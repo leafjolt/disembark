@@ -2,7 +2,23 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { useAuthStore } from './auth'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
+// Environment-aware API URL configuration
+const getApiUrl = () => {
+  // Use Vite's environment variable if available
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL
+  }
+
+  // Fallback based on environment
+  if (import.meta.env.DEV) {
+    return 'http://localhost:3000/api'
+  }
+
+  // Production fallback - should be set via .env.production
+  return 'https://your-deployed-backend-url.com/api'
+}
+
+const API_URL = getApiUrl()
 
 export const useTripsStore = defineStore('trips', () => {
   const trips = ref([])
