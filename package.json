@@ -7,7 +7,7 @@
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:backend": "cd backend && npm run dev",
     "dev:frontend": "cd disembark-frontend && npm run dev",
-    "build:frontend": "cd disembark-frontend && npm run build",
+    "build": "cd disembark-frontend && npm run build",
     "deploy": "gh-pages -d disembark-frontend/dist",
     "install:all": "npm install && cd backend && npm install && cd ../disembark-frontend && npm install"
   },
