@@ -172,63 +172,56 @@ Use the following endpoints with JSON bodies.
 
 ## Week 14: Front-end Setup
 
-### Clone or open the frontend project
-1. From the repo root, change into the frontend folder:
-   ```bash
-   cd disembark-frontend
-   ```
-2. Install frontend dependencies:
+### Install frontend dependencies from the repo root
+1. From the repository root, install all dependencies once:
    ```bash
    npm install
    ```
-3. Confirm the frontend environment file exists at `disembark-frontend/.env`.
+2. If you only want frontend dependencies, use:
+   ```bash
+   npm run install:all
+   ```
+3. Confirm the frontend environment files exist at `disembark-frontend/.env.development` and `disembark-frontend/.env.production`.
 
 ### Configure `VITE_API_URL`
-1. Open `disembark-frontend/.env.development` (for local development).
-2. Set the API URL used by the frontend stores:
+1. Open `disembark-frontend/.env.development` for local development.
+2. Set the local API URL:
    ```env
    VITE_API_URL=http://localhost:3000/api
    ```
 3. For production, update `disembark-frontend/.env.production`:
    ```env
-   VITE_API_URL=https://your-deployed-backend-url.com/api
+   VITE_API_URL=https://your-app-render.onrender.com/api
    ```
-4. Vite automatically loads the appropriate `.env` file based on the build command:
+4. Vite automatically loads the appropriate `.env` file based on the command:
    - `npm run dev` loads `.env.development`
    - `npm run build` loads `.env.production`
-5. The stores in `disembark-frontend/src/stores/auth.js` and `disembark-frontend/src/stores/trips.js` will automatically use the correct API URL.
+5. The frontend stores in `disembark-frontend/src/stores/auth.js` and `disembark-frontend/src/stores/trips.js` then use the correct API URL.
 
-### Run the frontend dev server
-1. Start the backend first in a separate terminal:
+### Run the app from the repository root
+1. Start both backend and frontend together from the repo root:
    ```bash
-   cd backend
    npm run dev
    ```
-2. In another terminal, start the frontend:
+2. Open the local URL printed by Vite, usually:
    ```bash
-   cd disembark-frontend
-   npm run dev
-   ```
-3. Open the local URL printed by Vite, usually:
-   ```
    http://localhost:5173
    ```
+3. If you only want to start the backend or frontend individually, use these root commands:
+   - Backend only:
+     ```bash
+     npm run dev:backend
+     ```
+   - Frontend only:
+     ```bash
+     npm run dev:frontend
+     ```
 
-**Alternative: Run both servers with one command**
-From the repository root, you can run both frontend and backend simultaneously:
-```bash
-npm run dev
-```
-This requires installing dependencies in the root first:
-```bash
-npm install
-```
-
-### Verify the frontend connects to the backend
+### Verify the front-end connects to the backend
 1. Register a new user in the frontend app.
 2. Log in and create a trip.
-3. If you can successfully load trips and add events, the frontend is connecting to the backend.
-4. You can also open browser developer tools and confirm network requests are sent to:
+3. Confirm trips and events load successfully.
+4. Open browser dev tools and verify network requests go to:
    - `http://localhost:3000/api/auth/login`
    - `http://localhost:3000/api/trips`
 
@@ -247,89 +240,57 @@ npm install
 
 ## Week 15: Deployment
 
-### Deploy the backend to Railway
-1. Create a new Railway project and connect it to this repository, or deploy from the `backend/` folder.
-2. Because this repo contains both frontend and backend, make sure Railway is configured to use the backend root directory.
-   - In the Railway dashboard, set the project root / working directory to `backend/`.
-   - If using GitHub deploy, select the repo and then choose `backend/` as the root directory.
-3. In Railway, set environment variables:
+### Deploy the backend to Render
+1. Create a new [Render](https://render.com) web service and connect it to this repository.
+2. Set the build root directory to `backend/`.
+3. In Render, set the environment variables:
    - `MONGODB_URI` — your MongoDB Atlas connection string.
    - `JWT_SECRET` — secret used to sign JWT tokens.
-   - `NODE_ENV` — set to `production`.
-   - `PORT` — optional. Railway usually provides a port automatically.
-4. Set the start command to:
+4. Set the deploy start command to:
    ```bash
-   npm start
+   npm run start
    ```
-5. Deploy and verify the backend URL returns the health endpoint successfully.
+5. Deploy the backend and verify the Render backend URL (seen in the dashboard) returns:
+   ```json
+   { "message": "Disembark server is running" }
+   ```
 
 ### Deploy the frontend to GitHub Pages
-1. Build the frontend static site from `disembark-frontend/`:
+1. From the repository root, build the frontend:
    ```bash
-   cd disembark-frontend
-   npm install
    npm run build
    ```
-2. If you are using GitHub Pages, deploy the contents of `disembark-frontend/dist/`.
-3. Configure GitHub Pages to serve from the deployed `gh-pages` branch or from the repository's Pages settings.
-4. Alternatively, use a GitHub Actions workflow to automatically build and publish `disembark-frontend/dist/` on push.
-
-### Set environment variables in the Railway dashboard
-1. Open your Railway project and go to **Settings** or **Variables**.
-2. Add these variables for the backend service:
-   - `MONGODB_URI` — your MongoDB Atlas connection string.
-   - `JWT_SECRET` — a random secret string for JWT signing.
-   - `NODE_ENV` — `production`.
-3. Leave Railway's assigned `PORT` unchanged.
-4. If your backend needs any additional environment-specific config, add it here.
-
-### Link the deployed front-end to the deployed back-end
-1. Get the Railway backend base URL, for example:
+2. Run this command to deploy to GitHub:
+   ```bash
+   npm run deploy
    ```
-   https://your-app-railway.up.railway.app
+3. Confirm the site is available at:
+   ```text
+   https://your-username.github.io/disembark/
+   ```
+
+### Link the deployed front-end to the Render backend
+1. Copy your Render backend URL, for example:
+   ```text
+   https://your-backend.onrender.com
    ```
 2. In `disembark-frontend/.env.production`, set:
    ```env
-   VITE_API_URL=https://your-app-railway.up.railway.app/api
+   VITE_API_URL=https://your-backend.onrender.com/api
    ```
-3. Rebuild the frontend after updating the production environment:
+3. Rebuild the frontend from the repo root:
    ```bash
-   cd disembark-frontend
    npm run build
    ```
-4. Deploy the rebuilt `dist/` folder to GitHub Pages.
-5. The frontend will then send API requests to your Railway backend URL.
+4. Deploy to GitHub Pages once again:
+   ```bash
+   npm run deploy
+   ```
+5. The frontend will then send API requests to the Render backend.
 
 ### CORS configuration
 - The backend currently enables CORS for all origins using `cors()` in `backend/server.js`.
-- This means your deployed frontend on GitHub Pages can call the Railway backend without extra CORS setup.
-- If you later restrict CORS, add your GitHub Pages domain to the allowed origins.
-
-
-### Deploy the frontend to GitHub Pages
-1. Build the frontend static site from `disembark-frontend/`:
-   ```bash
-   npm run build
-   ```
-2. Deploy the generated `dist/` folder to GitHub Pages, Netlify, or another static host.
-3. In GitHub Pages or your chosen host, point the site to the `dist/` output.
-
-### Link frontend to backend in production
-1. Update the frontend environment for production to use the deployed backend URL.
-2. Edit `disembark-frontend/.env.production` and replace the placeholder:
-   ```env
-   VITE_API_URL=https://your-deployed-backend-url.com/api
-   ```
-3. Build the frontend with the production environment:
-   ```bash
-   cd disembark-frontend
-   npm run build
-   ```
-4. Deploy the generated `dist/` folder to GitHub Pages, Netlify, or another static host.
-
-### CORS configuration
-- The backend already enables CORS for all origins using `cors()` in `backend/server.js`.
-- This means the deployed frontend should be allowed to call the deployed backend without additional CORS changes.
-- If you lock CORS to specific origins later, add the frontend deployment origin to the allowed list.
+- This allows your deployed frontend on GitHub Pages to call the Render backend.
+- If you later restrict CORS, add your deployed frontend origin to the allowed origins.
 
 ---
