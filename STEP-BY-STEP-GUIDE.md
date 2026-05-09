@@ -173,15 +173,11 @@ Use the following endpoints with JSON bodies.
 ## Week 14: Front-end Setup
 
 ### Install frontend dependencies from the repo root
-1. From the repository root, install all dependencies once:
+1. From the repository root, install all dependencies for both frontend and backend once:
    ```bash
-   npm install
+   npm install:all
    ```
-2. If you only want frontend dependencies, use:
-   ```bash
-   npm run install:all
-   ```
-3. Confirm the frontend environment files exist at `disembark-frontend/.env.development` and `disembark-frontend/.env.production`.
+2. Confirm the frontend environment files exist at `disembark-frontend/.env.development` and `disembark-frontend/.env.production`. If they do not, create them.
 
 ### Configure `VITE_API_URL`
 1. Open `disembark-frontend/.env.development` for local development.
