@@ -228,10 +228,6 @@ Use the following endpoints with JSON bodies.
 - `disembark-frontend/src/stores/trips.js` — trips and event state management
 - `disembark-frontend/src/views/` — app pages for signup, login, trips, itinerary, and event editing
 
-### AI tooling / Claude Code
-- This repository does not include a `CLAUDE.md` configuration file.
-- If you use Claude Code or similar AI tooling, add any project-specific instructions in a root config file so your AI assistant knows the repo structure.
-
 ---
 
 ## Week 15: Deployment
